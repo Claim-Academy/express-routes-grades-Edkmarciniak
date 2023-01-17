@@ -3,7 +3,8 @@
   "main": "app/index.js",
   "type": "module",
   "scripts": {
-  "start": "node --watch app/index.js"    "test": "vitest"
+  "start": "node --watch app/index.js",
+  "test": "vitest"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
