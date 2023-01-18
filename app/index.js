@@ -14,7 +14,7 @@ app.get("/api/students/attendance", (_, res) => {
 
 app.get("/api/students/:id", (req, res) => {
 
-  const { id} = req.params;
+  const { id } = req.params;
 
   const student = STUDENTS.find((student) => student.id === req.params.id);
 
