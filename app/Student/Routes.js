@@ -1,6 +1,8 @@
 // Express is a web framework for Node.js
 // We primarily use it to route users to different pages/responses
-import express from "express";
+import { Router } from "express";
+
+const router = new Router();
 
 const CONTACTS = [
   { id: 1, name: "John" },
