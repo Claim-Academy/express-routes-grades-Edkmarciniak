@@ -4,6 +4,8 @@ import { Router } from "express";
 
 const studentRoutes = new Router();
 
+export default studentRoutes;
+
 const CONTACTS = [
   { id: 1, name: "John" },
   { id: 2, name: "Jane" },
@@ -42,12 +44,12 @@ app.get("/api/contacts/:id", (request, response) => {
 // This is required to access the body of a POST request
 app.use(express.json());
 
-app.post("/api/contacts", (request, response) => {
+router.post("/api/contacts", (request, response) => {
   console.log(request.body);
   response.send("ok");
 });
 
-app.put("/api/contacts/:id", (request, response) => {
+router.put("/api/contacts/:id", (request, response) => {
   // Id that needs to be updated
   const id2Update = request.params.id;
   const updatedContact = request.body;
