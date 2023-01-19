@@ -1,5 +1,6 @@
 import express from "express";
 import STUDENTS from "./app/GRADES.js";
+import studentRoutes from "./app/student/routes.js"
 
 const app = express();
 
