@@ -1,5 +1,5 @@
 import express from "express";
-import STUDENTS from "./GRADES.js";
+import STUDENTS from "./app/GRADES.js";
 
 const app = express();
 
@@ -16,6 +16,11 @@ app.get("/api/students/:id", req, res) => {
 
   res.send(student);
 };
+
+const studentsWithoutIds = STUDENTS.map((students) => {
+  const { id, ...rest } = student;
+  return rest;
+});
 
 app.listen(3000, () => {
   console.info("Server is running on port 3000");
