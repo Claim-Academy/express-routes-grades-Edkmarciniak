@@ -1,6 +1,6 @@
 import express from "express";
 import STUDENTS from "./app/GRADES.js";
-import studentRoutes from "./app/student/routes.js"
+import studentRoutes from "./app/student/routes.js";
 
 const app = express();
 
@@ -12,14 +12,15 @@ app.get("/api/students/attendance", (_, res) => {
   res.json(STUDENTS.map((student) => student.name));
 });
 
-app.get("/api/students/:id", req, res) => {
-  const { id } = req.params.id
+app.get("/api/students/:id", (req, res) => {
+  const { id } = req.params.id;
 
   res.send(student);
-};
+});
 
-const studentsWithoutIds = STUDENTS.map((students) => {
+const studentsWithoutIds = STUDENTS.map((student) => {
   const { id, ...rest } = student;
+
   return rest;
 });
 
