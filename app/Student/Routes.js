@@ -2,7 +2,7 @@
 // We primarily use it to route users to different pages/responses
 import { Router } from "express";
 
-const router = new Router();
+const studentRoutes = new Router();
 
 const CONTACTS = [
   { id: 1, name: "John" },
