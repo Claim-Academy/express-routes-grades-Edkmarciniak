@@ -1,89 +1,69 @@
-// Express is a web framework for Node.js
-// We primarily use it to route users to different pages/responses
 import { Router } from "express";
+import STUDENTS from "../GRADES.js";
 
-const studentRoutes = new Router();
+const router = new Router();
 
-export default studentRoutes;
-
-const CONTACTS = [
-  { id: 1, name: "John" },
-  { id: 2, name: "Jane" },
-];
-
-const app = express();
-
-app.get("/api/contacts", (_, response) => {
-  response.json(CONTACTS);
+// /api/student
+// * DON'T REPEAT '/api/students' - it's already in app/index.js
+router.get("/", (_, res) => {
+  res.json(STUDENTS);
 });
 
-// ':id' is a route request parameter (params)
-// It will be available in the request.params object
-// e.g. /api/contacts/1 => { id: 1 }
-// 'id' can be any name
-app.get("/api/contacts/:id", (request, response) => {
-  const { id } = request.params;
+router.get("/attendance", (_, res) => {
+  res.json(STUDENTS.map((student) => student.name));
+});
 
-  const contact = CONTACTS.find((contact) => contact.id === Number(id));
+router.get("/:id", (req, res) => {
+  // * This is a string
+  const { id } = req.params;
 
-  /**
-   * If the contact is not found, we return a 404 status code
-   * and a message to the user
-   * 404 means the resource was not found
-   * Otherwise, send back the found contact with a 200 status code
-   * 200 means the resource was found
-   */
-  if (contact) {
-    response.json(contact);
+  const student = STUDENTS.find((student) => student.id === Number(id));
+
+  if (student) {
+    res.json(student);
   } else {
-    response.status(404).json({ message: "Contact not found" });
+    res.status(404).json({ message: "Student not found" });
   }
 });
 
-// Express uses middleware to parse the body of a request
-// This is required to access the body of a POST request
-app.use(express.json());
+router.post("/", (req, res) => {
+  const newStudent = req.body;
 
-router.post("/api/contacts", (request, response) => {
-  console.log(request.body);
-  response.send("ok");
+  if (newStudent.name) {
+    // Avoid push - this is for demo purposes only
+    STUDENTS.push(
+      // * This is a spread operator
+      // We will mix in the grades property with an empty array
+      { ...newStudent, grades: [] }
+    );
+
+    // No persistence - but send back the updated temporary STUDENTS
+    res.json(STUDENTS);
+  } else {
+    res.status(400).json({ message: "Student name is required" });
+  }
 });
 
-router.put("/api/contacts/:id", (request, response) => {
-  // Id that needs to be updated
-  const id2Update = request.params.id;
-  const updatedContact = request.body;
+router.put("/:id/grades", (req, res) => {
+  // Id of the student to update
+  const { id } = req.params;
 
-  // Use map to update the contact
-  // If the contact id matches the id in the request params, update it
-  // Otherwise, return the original contact
-  CONTACTS.map((contact) => {
-    if (contact.id === Number(id2Update)) {
-      return updatedContact;
-    }
+  const student2Update = STUDENTS.find((student) => student.id === Number(id));
 
-    return contact;
-  });
+  if (student2Update) {
+    // * This is a spread operator
+    // We will mix in the grades property with an empty array
+    student2Update.grades.push(req.body);
 
-  response.json({
-    message: `Contact updated successfully with id: ${id2Update}`,
-  });
+    // No persistence - but send back the updated temporary STUDENTS
+    res.json(student2Update);
+  } else {
+    res.status(404).json({ message: "Student not found" });
+  }
 });
 
-app.delete("/api/contacts/:id", (request, response) => {
-  const id2Delete = request.params.id;
-
-  // Filter out the contact with the id to delete
-  const updatedContacts = CONTACTS.filter(
-    (contact) => contact.id !== Number(id2Delete)
-  );
-
-  response.json({
-    message: `Contact deleted successfully with id: ${id2Delete}`,
-    updatedContacts,
-  });
+router.delete("/:id", (req, res) => {
+  res.json(STUDENTS.filter((student) => student.id !== Number(req.params.id)));
 });
 
-app.listen(3000, () => {
-  console.info("Server is running on port 3000");
-});
+export default router;
