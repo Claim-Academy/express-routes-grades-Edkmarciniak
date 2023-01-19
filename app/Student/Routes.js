@@ -1,5 +1,11 @@
 import { Router } from "express";
 import STUDENTS from "../GRADES.js";
+import STUDENTS from "./app/GRADES.js";
+
+const studentsWithoutIds = STUDENTS.map((student) => {
+  const { id, ...rest } = student;
+  return rest;
+});
 
 const router = new Router();
 
