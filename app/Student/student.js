@@ -1,5 +1,8 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
-export default model('Student', new Schema({
-  name: String,}
-  ));
+export default model(
+  "Student",
+  new Schema({
+    name: String,
+  })
+);
