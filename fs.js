@@ -10,5 +10,5 @@ const studentsWithoutIds = STUDENTS.map((student) => {
 fs.writeFile(
   "students.json",
   JSON.stringify(studentsWithoutIds, null, 2),
-  "utf8"
+  "utf-8"
 );
