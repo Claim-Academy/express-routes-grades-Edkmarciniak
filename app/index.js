@@ -1,6 +1,10 @@
 import express from "express";
 import studentRoutes from "./student/routes.js";
+import StudentController from "./student/controller.js";
 
+StudentController.getStudents().then((students) => {
+  console.log(students);
+});
 const app = express();
 
 app.use(express.json());
