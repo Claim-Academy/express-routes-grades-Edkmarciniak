@@ -16,5 +16,3 @@ export default {
     return Student.find();
   },
 };
-const deletedStudent = await Student.delete({ username: "john.doe" });
-console.log(deletedStudent);
