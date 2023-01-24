@@ -1,12 +1,20 @@
 import mongoose from "mongoose";
 import config from "../config.js";
+import Student from "./Student.js";
 
-// Connect to the database
 mongoose
   .connect(config.getDbConn("students"))
   .then(() => {
-    console.log("Connected to the database");
+    console.log("Connected to the DB");
   })
   .catch((err) => {
-    console.log("Error connecting to the database", err);
+    console.log("Error connecting to DB", err);
   });
+
+export default {
+  getStudents() {
+    return Student.find();
+  },
+};
+const deletedStudent = await Student.delete({ username: "john.doe" });
+console.log(deletedStudent);
