@@ -15,4 +15,6 @@ export default {
   getStudents() {
     return Student.find();
   },
-};
+
+
+
