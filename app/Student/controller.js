@@ -42,7 +42,6 @@ export const controller = {
     );
   },
 
-  export default controller;
 
   Student.updateMany(
     {},
@@ -64,6 +63,9 @@ export const controller = {
       console.error(err);
     });
 
+    export default controller;
+  },
+
   // TODO: Set up the corresponding route in app/student/routes.js 👇🏾
 
   // TODO: Add method to get a single student by id
@@ -77,4 +79,5 @@ export const controller = {
   // TODO: Add method to delete a single score by student id and score id
 
   // TODO: Add method to delete a single student by id
+
 
