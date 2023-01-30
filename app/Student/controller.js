@@ -77,6 +77,4 @@ export const controller = {
   // TODO: Add method to delete a single score by student id and score id
 
   // TODO: Add method to delete a single student by id
-};
 
-export default controller;
