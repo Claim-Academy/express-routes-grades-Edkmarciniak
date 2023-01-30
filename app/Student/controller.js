@@ -8,7 +8,6 @@ const options = {
   strict: "throw",
 };
 
-mongoose.set("strictQuery", true);
 mongoose
   .connect(config.getDbConn("students"))
   .then(() => {
