@@ -12,6 +12,11 @@ app.get("/", (_, res) => {
   res.send("Hello World");
 });
 
+app.post("/api/studentRoutes", (req, response) => {
+  console.log(req.body);
+  response.send("ok");
+});
+
 app.listen(3000, () => {
   console.info("Server is running on port 3000");
 });
