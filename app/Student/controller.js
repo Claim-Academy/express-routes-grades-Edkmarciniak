@@ -18,7 +18,7 @@ export const controller = {
     return Student.find();
   },
 
-  getStudentById(id) {
+  getStudent(id) {
     return Student.findById(id);
   },
 
@@ -41,43 +41,39 @@ export const controller = {
       { strict: "throw" }
     );
   },
+};
 
+export default controller;
 
-  Student.updateMany(
-    {},
-    {
-      $set: { "grades.$[elem]._id: mongoose.Types.ObjectId() },
-    },
-
-// Must pass in the arrayFilters option to updateMany() to use the elem._id
-
-    {
-      // Only update grades that don't have an _id
-      arrayFilters: [{ "elem._id": { $exists: false } }],
-    }
-  )
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-
-    export default controller;
+Student.updateMany(
+  {},
+  {
+    $set: { "grades.$[elem]._id": mongoose.Types.ObjectId() },
   },
 
-  // TODO: Set up the corresponding route in app/student/routes.js 👇🏾
+  // Must pass in the arrayFilters option to updateMany() to use the elem._id
+  {
+    // Only update grades that don't have an _id
+    arrayFilters: [{ "elem._id": { $exists: false } }],
+  }
+)
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
-  // TODO: Add method to get a single student by id
+// TODO: Set up the corresponding route in app/student/routes.js 👇🏾
 
-  // TODO: Add method to create a new student (scores can be empty)
+// TODO: Add method to get a single student by id
 
-  // TODO: Add method to update a single student's name by id
+// TODO: Add method to create a new student (scores can be empty)
 
-  // TODO: Add method to update a single score by student id and score id
+// TODO: Add method to update a single student's name by id
 
-  // TODO: Add method to delete a single score by student id and score id
+// TODO: Add method to update a single score by student id and score id
 
-  // TODO: Add method to delete a single student by id
+// TODO: Add method to delete a single score by student id and score id
 
-
+// TODO: Add method to delete a single student by id
