@@ -2,11 +2,7 @@ import mongoose from "mongoose";
 import config from "../config.js";
 import Student from "./Student.js";
 
-const options = {
-  rawResult: true,
-  runValidators: true,
-  strict: "throw",
-};
+mongoose.set(strictQuery, true);
 
 mongoose
   .connect(config.getDbConn("students"))
@@ -21,6 +17,49 @@ export const controller = {
   getStudents() {
     return Student.find();
   },
+
+  getStudentById(id) {
+    return Student.findById(id);
+  },
+
+  createStudent(student) {
+    return Student.create(student);
+  },
+
+  createStudentGrade(id, grade) {
+    return Student.findByIdAndUpdate(id, { $push: { grades: grade } });
+  },
+
+  updateStudentName(id, name) {
+    return StudentByIdAndUpdate(id, { name }, { strict: "throw" });
+  },
+
+  updateStudentGrade(id, grade) {
+    return Student.findByIdAndUpdate(
+      id,
+      { $push: { grades: grade } },
+      { strict: "throw" }
+    );
+  },
+
+  export default controller;
+
+  Student.updateMany(
+    {},
+    {
+      $set: { "grades.$[elem]._id: mongoose.Types.ObjectId() },
+    },
+
+    {
+      arrayFilters: [{ "elem._id": { $exists: false } }],
+    }
+  )
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 
   // TODO: Set up the corresponding route in app/student/routes.js 👇🏾
 
