@@ -16,4 +16,8 @@ router.get("/", (_, res) => {
     });
 });
 
+router.get("/", (_, res) => {
+  res.send("Student routes checked");
+});
+
 export default router;
