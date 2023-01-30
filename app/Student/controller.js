@@ -50,7 +50,10 @@ export const controller = {
       $set: { "grades.$[elem]._id: mongoose.Types.ObjectId() },
     },
 
+// Must pass in the arrayFilters option to updateMany() to use the elem._id
+
     {
+      // Only update grades that don't have an _id
       arrayFilters: [{ "elem._id": { $exists: false } }],
     }
   )
