@@ -6,10 +6,11 @@ export default model(
     _id: mongoose.Schema.Types.ObjectId,
     gradeType: { type: String, enum: ["HW", "Quiz", "Test"], default: "HW": },
     name: { type: String, required: [true, "Give this grade a name"] },
-    earned: { type: Number, required: [true, "Earned points are required"]
+    earned: { type: Number, required: [true, "How many points were earned"] },
     possible: {
       type: Number,
       required: [true, "How many points were possible?"],
 
     },
   })
+);
