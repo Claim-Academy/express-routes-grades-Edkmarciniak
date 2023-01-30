@@ -1,6 +1,9 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-export default model(
+export default new Schema( {
+  _id: mongoose.Schema.Types.ObjectId,
+
+}
   "Grade",
   new Schema({
     _id: mongoose.Schema.Types.ObjectId,

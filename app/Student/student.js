@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import Grade from "../Grade.js";
+import Grade from "./Grade.js";
 
 export default model(
   "Student",
