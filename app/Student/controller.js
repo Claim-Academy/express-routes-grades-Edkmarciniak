@@ -48,6 +48,7 @@ export default controller;
 Student.updateMany(
   {},
   {
+    // Set the _id field for each grade to a new ObjectId
     $set: { "grades.$[elem]._id": mongoose.Types.ObjectId() },
   },
 
