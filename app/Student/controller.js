@@ -2,8 +2,11 @@ import mongoose from "mongoose";
 import config from "../config.js";
 import Student from "./Student.js";
 
-
-
+const options = {
+  rawResult: true,
+  runValidators: true,
+  strict: "throw",
+};
 
 mongoose.set("strictQuery", true);
 mongoose
@@ -19,11 +22,6 @@ export const controller = {
   getStudents() {
     return Student.find();
   },
-
-  app.post("/app/student/routes.js", (req, response) => {
-    console.log(req.body);
-    response.send("ok");
-  });
 
   // TODO: Set up the corresponding route in app/student/routes.js 👇🏾
 
