@@ -1,19 +1,29 @@
-import mongoose, { Schema } from "mongoose";
+import { Schema } from "mongoose";
 
 export default new Schema( {
-  _id: mongoose.Schema.Types.ObjectId,
+  gradeType: {
+     type: String,
+     enum: ["HW", "Quiz", "Test"],
+     default: "HW": },
+},
+name: {
+  type:
+  String,
+  required: [true, "Grade name is required"],
+  minlength: [3, "Grade name must be at least 3 characters long"],
+  trim: true,
+  unique: true,
+},
+earned: {
+  type: Number,
+  required: [true, "Earned points are required"],
+},
+possible: {
+  type: Number,
+  required: [true, "Possible points are required"],
+},
+});
 
-}
-  "Grade",
-  new Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    gradeType: { type: String, enum: ["HW", "Quiz", "Test"], default: "HW": },
-    name: { type: String, required: [true, "Give this grade a name"] },
-    earned: { type: Number, required: [true, "How many points were earned"] },
-    possible: {
-      type: Number,
-      required: [true, "How many points were possible?"],
 
-    },
-  })
-);
+
+
