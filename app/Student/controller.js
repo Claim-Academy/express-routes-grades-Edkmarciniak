@@ -48,27 +48,61 @@ const controller = {
     );
   },
 
-  // TODO: Add method to update a single score by student id and score id
+  async updateStudentScoreByGradeName(studentId, updatedGrade) {
+    // Find the student by id
+    // 'this' refers to the controller object
+    const foundStudent = await this.getStudentById(studentId);
 
-  // TODO: Add method to delete a single score by student id and score id
+    // If the student is found, update the grade
+    if (foundStudent) {
+      const grade2Update = foundStudent.grades.find(
+        (grade) => grade.name === updatedGrade.name
+      );
 
-  // TODO: Add method to delete a single student by id
+      if (grade2Update) {
+        grade2Update.earned = updatedGrade.earned;
+
+        // Trigger the save middleware (validate, etc.)
+        return foundStudent.save();
+      }
+
+      throw new Error("Grade not found. Did you enter the correct name?");
+    } else {
+      throw new Error("Student not found");
+    }
+  },
+
+  updateGradeName(originalGradeName, updatedGradeName) {
+    return Student.updateMany(
+      { "grades.name": originalGradeName },
+      { $set: { "grades.$.name": updatedGradeName } },
+      { multi: true }
+    );
+  },
+
+  updateGradeWithCurve(originalGradeName, curve) {
+    // This will return a promise that resolves to the number of documents updated
+    // TODO: Use this info ℹ️ in the router to send a response regarding the status of the update
+    return Student.updateMany(
+      { "grades.name": originalGradeName },
+      { $inc: { "grades.$.earned": curve } },
+      { multi: true }
+    );
+  },
+
+  deleteStudentById(id) {
+    return Student.findByIdAndDelete(id);
+  },
 };
 
-const updatedStudent = await controller
-  .createGradeForStudentById("63d81d16a92c37c6ea49b75b", {
-    gradeType: "quiz",
-    name: "Test Quiz",
-    earned: 100,
-    possible: 100,
-  })
+const avgGrade = await controller
+  .getAvgScoreByStudentId("63d83ad635828620f631a7f")
   .catch((err) => {
-    if (err.name === "ValidationError") {
-      console.error(err.message);
+    if (err instanceof mongoose.Error.CastError && err.kind === "ObjectId") {
+      console.log("Invalid id");
     }
-
-    // console.error(err);
   });
 
-console.log(updatedStudent);
+console.log(avgGrade);
+
 export default controller;
