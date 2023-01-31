@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 import config from "../config.js";
 import Student from "./Student.js";
 
-mongoose.set(strictQuery, true);
-
+mongoose.set("strictQuery", true);
 mongoose
   .connect(config.getDbConn("students"))
   .then(() => {
@@ -13,12 +12,12 @@ mongoose
     console.error("Error connecting to the database", err);
   });
 
-export const controller = {
+const controller = {
   getStudents() {
     return Student.find();
   },
 
-  getStudent(id) {
+  getStudentById(id) {
     return Student.findById(id);
   },
 
@@ -26,55 +25,50 @@ export const controller = {
     return Student.create(student);
   },
 
-  createStudentGrade(id, grade) {
-    return Student.findByIdAndUpdate(id, { $push: { grades: grade } });
+  async createGradeForStudentById(id, grade) {
+    // Find the student by id
+    // 'this' refers to the controller object
+    const foundStudent = await this.getStudentById(id);
+
+    // If the student is found, add the grade to the student's grades array
+    if (foundStudent) {
+      foundStudent.grades.push(grade);
+
+      // Trigger the save middleware (validate, etc.)
+      return foundStudent.save();
+    }
   },
 
-  updateStudentName(id, name) {
-    return StudentByIdAndUpdate(id, { name }, { strict: "throw" });
-  },
-
-  updateStudentGrade(id, grade) {
+  // updatedName is an object with a name property from the request body
+  updateStudentNameById(id, updatedName) {
     return Student.findByIdAndUpdate(
       id,
-      { $push: { grades: grade } },
-      { strict: "throw" }
+      { name: updatedName.name },
+      { rawResult: true }
     );
   },
+
+  // TODO: Add method to update a single score by student id and score id
+
+  // TODO: Add method to delete a single score by student id and score id
+
+  // TODO: Add method to delete a single student by id
 };
 
-export default controller;
-
-Student.updateMany(
-  {},
-  {
-    // Set the _id field for each grade to a new ObjectId
-    $set: { "grades.$[elem]._id": mongoose.Types.ObjectId() },
-  },
-
-  // Must pass in the arrayFilters option to updateMany() to use the elem._id
-  {
-    // Only update grades that don't have an _id
-    arrayFilters: [{ "elem._id": { $exists: false } }],
-  }
-)
-  .then((result) => {
-    console.log(result);
+const updatedStudent = await controller
+  .createGradeForStudentById("63d81d16a92c37c6ea49b75b", {
+    gradeType: "quiz",
+    name: "Test Quiz",
+    earned: 100,
+    possible: 100,
   })
   .catch((err) => {
-    console.error(err);
+    if (err.name === "ValidationError") {
+      console.error(err.message);
+    }
+
+    // console.error(err);
   });
 
-// TODO: Set up the corresponding route in app/student/routes.js 👇🏾
-
-// TODO: Add method to get a single student by id
-
-// TODO: Add method to create a new student (scores can be empty)
-
-// TODO: Add method to update a single student's name by id
-
-// TODO: Add method to update a single score by student id and score id
-
-// TODO: Add method to delete a single score by student id and score id
-
-// TODO: Add method to delete a single student by id
+console.log(updatedStudent);
+export default controller;
