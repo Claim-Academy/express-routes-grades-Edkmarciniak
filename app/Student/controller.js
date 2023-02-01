@@ -21,6 +21,25 @@ const controller = {
     return Student.findById(id);
   },
 
+  async getAvgScoreByStudentId(id) {
+    const student = await this.getStudentById(id);
+
+    if (student) {
+      return student.avgPct;
+    }
+
+    throw new Error("Student not found");
+  },
+
+  async getCumulativeClassAvgScore() {
+    const students = await this.getStudents();
+
+    return (
+      students.reduce((avg, { avgPct }) => avg + avgPct, 0) / students.length
+    );
+  },
+
+  // `student` is expected to validate against the Student schema
   createStudent(student) {
     return Student.create(student);
   },
@@ -37,15 +56,12 @@ const controller = {
       // Trigger the save middleware (validate, etc.)
       return foundStudent.save();
     }
+
+    throw new Error("Student not found");
   },
 
-  // updatedName is an object with a name property from the request body
-  updateStudentNameById(id, updatedName) {
-    return Student.findByIdAndUpdate(
-      id,
-      { name: updatedName.name },
-      { rawResult: true }
-    );
+  updateStudentNameById(id, name) {
+    return Student.findByIdAndUpdate(id, { name }, { rawResult: true });
   },
 
   async updateStudentScoreByGradeName(studentId, updatedGrade) {
@@ -81,9 +97,6 @@ const controller = {
   },
 
   updateGradeWithCurve(originalGradeName, curve) {
-    // This will return a promise that resolves to the number of documents updated
-    // TODO: Use this info ℹ️ in the router to send a response regarding the status of the update
-
     return Student.updateMany(
       { "grades.name": originalGradeName },
       { $inc: { "grades.$.earned": curve } },
@@ -95,15 +108,5 @@ const controller = {
     return Student.findByIdAndDelete(id);
   },
 };
-
-const avgGrade = await controller
-  .getAvgScoreByStudentId("63d83ad635828620f631a7f")
-  .catch((err) => {
-    if (err instanceof mongoose.Error.CastError && err.kind === "ObjectId") {
-      console.log("Invalid id");
-    }
-  });
-
-console.log(avgGrade);
 
 export default controller;
