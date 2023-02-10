@@ -1,5 +1,9 @@
-import initDb from "./db.js";
-import initServer from "./server.js";
+import express from "express";
 
-initDb();
-initServer();
+const app = express();
+
+app.use(express.json());
+
+app.listen(3000, () => {
+  console.info("Server is running on port 3000");
+});
